@@ -24,16 +24,16 @@ const Game = () => {
           return !fearsIdies.includes(cell.id)
         })
         .map(({ id }) => id);
-  
-        if (availableNumbers.length === 0) {
-          // console.log("Все числа уже использованы.");
-          return null;
-        }
-        
+
+      if (availableNumbers.length === 0) {
+        // console.log("Все числа уже использованы.");
+        return null;
+      }
+
       const randomIndex = Math.floor(Math.random() * availableNumbers.length);
-    
+
       console.log('avial numbs', availableNumbers, randomIndex, availableNumbers[randomIndex])
-    
+
       return availableNumbers[randomIndex];
     };
 
@@ -42,19 +42,20 @@ const Game = () => {
       const newFearId = uniqueId()
 
       if (newFear) {
-        setFears((prevFears) => [...prevFears, { id: newFearId, cellId: newFear }])
+        // setFears((prevFears) => [...prevFears, { id: newFearId, cellId: newFear }])
+        setFears([...fears, { id: newFearId, cellId: newFear }])
 
 
         setTimeout(() => {
           // console.log('удаляем из FEARS число', newFear, newFearId)
           setFears(() => fears.filter((fear) => fear.id !== newFearId));
-        }, 30000);
+        }, 1500);
       }
     }
 
     const timerId = setInterval(() => {
       createFear(fears);
-    }, 7000)
+    }, 500)
 
     return () => {
       clearInterval(timerId)
