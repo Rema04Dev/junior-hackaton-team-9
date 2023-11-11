@@ -35,9 +35,17 @@
   border: 1px solid #000;
   border-radius: 10px;
   cursor: pointer;
-  transition: opacity 0.3s ease-in-out;
   font-family: 'Noto Emoji', sans-serif;
+  opacity: 0;
+  background-color: red;
+  transform: translateY(100%); /* Начальное положение внизу экрана */
+  transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out, transform 1s ease-in-out;
+}
+
+.fear.visible {
   opacity: 1;
+  background-color: green;
+  transform: translateY(0); /* Конечное положение вверху экрана */
 }
 
 .score {

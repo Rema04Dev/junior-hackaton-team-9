@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import '../styles/Game.css';
-import _ from 'lodash';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { addFear, removeFear } from '../slices/gameSlice';
+import { uniqueId } from 'lodash';
 
 const Game = () => {
   let counter = 1;
@@ -10,64 +11,60 @@ const Game = () => {
   const [fears, setFears] = useState([]);
   const [score, setScore] = useState(0);
 
-  useEffect(() => {
-    console.log('cells', cells)
-  }, [cells])
+  const fearsRedux = useSelector((state) => state.fears.items);
+  // console.log(fearsRedux)
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('useEffect FEARS', fears)
-  }, [fears])
-
-  useEffect(() => {
-    const createFear = () => {
-      console.log('create fear', fears, cells) // выберем рандомное число из тех что не входят в уже имеющиеся страхи
-
-      const generateRandomNumber = () => {
-        const availableNumbers = cells
-          .filter((cell) => {
-            console.log('filter avil nums', fears.includes(cell.id))
-            return !fears.includes(cell.id)
-          })
-          .map(({ id }) => id);
-        console.log('avial numbs', availableNumbers)
+    const generateRandomNumber = (fears) => {
+      // console.log('create fears', fears, cells)
+      const availableNumbers = cells
+        .filter((cell) => {
+          const fearsIdies = fears.map(({ cellId }) => cellId)
+          return !fearsIdies.includes(cell.id)
+        })
+        .map(({ id }) => id);
   
         if (availableNumbers.length === 0) {
-          console.log("Все числа уже использованы.");
+          // console.log("Все числа уже использованы.");
           return null;
         }
-  
-        const randomIndex = Math.floor(Math.random() * availableNumbers.length);
-        return availableNumbers[randomIndex];
-      };
-  
-      const randomNumber = generateRandomNumber();
-  
-      if (randomNumber) {
-        console.log("Сгенерированное число:", randomNumber);
-        setFears(() => [...fears, randomNumber]);
-      }
-  
-      setTimeout(() => {
-        console.log('удаляем из FEARS число', randomNumber)
-        setFears(() => fears.filter((fear) => fear !== randomNumber));
-      }, 60000);
-    };
-
-    const fearInterval = setInterval(() => {
-      createFear();
-    }, 5000);
+        
+      const randomIndex = Math.floor(Math.random() * availableNumbers.length);
     
-    return () => {
-      clearInterval(fearInterval);
+      console.log('avial numbs', availableNumbers, randomIndex, availableNumbers[randomIndex])
+    
+      return availableNumbers[randomIndex];
     };
-  }, [score, fears, cells]);
+
+    const createFear = () => {
+      const newFear = generateRandomNumber(fears);
+      const newFearId = uniqueId()
+
+      if (newFear) {
+        setFears((prevFears) => [...prevFears, { id: newFearId, cellId: newFear }])
 
 
+        setTimeout(() => {
+          // console.log('удаляем из FEARS число', newFear, newFearId)
+          setFears(() => fears.filter((fear) => fear.id !== newFearId));
+        }, 30000);
+      }
+    }
+
+    const timerId = setInterval(() => {
+      createFear(fears);
+    }, 7000)
+
+    return () => {
+      clearInterval(timerId)
+    };
+  }, [fears, cells]);
 
   const handleFearClick = (id) => () => {
     console.log('handle fear click', id)
     setScore((prevScore) => prevScore + 1);
-    setFears((prevFears) => prevFears.filter((fear) => fear !== id));
+    setFears((prevFears) => prevFears.filter((fear) => fear.id !== id));
   };
 
   const FearIcon = () => <div>{'\u{1F47B}'}</div>
@@ -77,8 +74,12 @@ const Game = () => {
       <div className="game-container">
         {cells.map((cell) => (
           <div key={cell.id} className={'cell'} >
-            {fears.filter((fear) => fear === cell.id).map((fear) => (
-              <div className='fear' key={fear} onClick={handleFearClick(fear)} >
+            {fears.filter((fear) => fear.cellId === cell.id).map((fear) => (
+              <div
+                className={`fear ${fear.cellId === cell.id ? 'visible' : ''}`}
+                key={fear.id}
+                onClick={handleFearClick(fear.id)}
+              >
                 <FearIcon />
               </div>
             ))}
