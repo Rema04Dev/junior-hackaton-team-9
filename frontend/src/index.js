@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import Game from './components/Game';
 import reportWebVitals from './reportWebVitals';
 import {
     createBrowserRouter,
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/game",
-        //element: Game,
+        element: <Game />,
     },
     {
         path: "/game_completed",
