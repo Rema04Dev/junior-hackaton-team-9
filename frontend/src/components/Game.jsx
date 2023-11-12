@@ -52,11 +52,13 @@ const Game = () => {
         <div className="container">
           <div className="game-field">
             <div className="score">Score: {score}</div>
-            <button onClick={startGame} disabled={isActive}>Start Game</button>
-            <button onClick={restartGame} disabled={!isActive}>Restart Game</button>
             <GameContainer onFearClick={handleFearClick} isActive={isActive} >
               <SeparationIcon width={80} />
             </GameContainer>
+            <div className="score-buttons">
+              <button onClick={startGame} disabled={isActive} className="button" id="button-score">Начать игру</button>
+              <button onClick={restartGame} disabled={!isActive} className="button" id="button-score">Играть снова</button>
+            </div>
           </div>
 
           <div className="fears-description">
