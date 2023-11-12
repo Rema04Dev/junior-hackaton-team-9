@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import _, { uniqueId } from "lodash";
-import { getRandomNumberByRange } from "../utils";
-import { fearElements } from "./fearsIcons";
 import { DarkIcon } from "./fearsIcons/DarkIcon";
 
 const levelMapping = {
@@ -19,7 +17,7 @@ const levelMapping = {
   }
 }
 
-const GameContainer = ({ isActive, onFearClick, children, level }) => {
+const GameContainer = ({ isActive, onFearClick, level }) => {
   const [fears, setFears] = useState([]);
   const [cells, setCells] = useState(
     Array(9)
@@ -29,7 +27,6 @@ const GameContainer = ({ isActive, onFearClick, children, level }) => {
 
   useEffect(() => {
     const generateRandomNumber = (fears) => {
-      // console.log('create fears', fears, cells)
       const availableNumbers = cells
         .filter((cell) => {
           const fearsIdies = fears.map(({ cellId }) => cellId);
@@ -38,18 +35,10 @@ const GameContainer = ({ isActive, onFearClick, children, level }) => {
         .map(({ id }) => id);
 
       if (availableNumbers.length === 0) {
-        // console.log("Все числа уже использованы.");
         return null;
       }
 
       const randomIndex = Math.floor(Math.random() * availableNumbers.length);
-
-      console.log(
-        "avial numbs",
-        availableNumbers,
-        randomIndex,
-        availableNumbers[randomIndex]
-      );
 
       return availableNumbers[randomIndex];
     };
@@ -59,11 +48,9 @@ const GameContainer = ({ isActive, onFearClick, children, level }) => {
       const newFearId = uniqueId();
 
       if (newFear) {
-        // setFears((prevFears) => [...prevFears, { id: newFearId, cellId: newFear }])
         setFears([...fears, { id: newFearId, cellId: newFear }]);
 
-        setTimeout(() => {
-          // console.log('удаляем из FEARS число', newFear, newFearId)
+        setTimeout(() => {         
           setFears(() => fears.filter((fear) => fear.id !== newFearId));
         }, levelMapping[level].clearTime);
       }
@@ -80,16 +67,17 @@ const GameContainer = ({ isActive, onFearClick, children, level }) => {
     }
   }, [fears, cells, isActive, level]);
 
-  const handleFearClick = (id) => () => {
-    console.log("handle fear click container", id);
+  const refCell = useRef(null);
+
+  const handleFearClick = (id) => (evt) => {
     onFearClick(id);
-    setFears((prevFears) => prevFears.filter((fear) => fear.id !== id));
+    refCell.current?.classList.add('touched');
+    setTimeout(() => {
+      setFears((prevFears) => prevFears.filter((fear) => fear.id !== id));
+      refCell.current?.classList.remove('touched');
+    }, 300)
   };
 
-  const getIcon = () => {
-    const randomFearIcon = getRandomNumberByRange(0, fearElements.length - 1);
-    return fearElements[randomFearIcon].icon;
-  }
 
   return (
     <div className="game-container">
@@ -97,16 +85,17 @@ const GameContainer = ({ isActive, onFearClick, children, level }) => {
         <div key={cell.id} className={"cell"}>
           {fears
             .filter((fear) => fear.cellId === cell.id)
-            .map((fear) => (
-              <div
+            .map((fear) => {
+              return <div
                 className={`fear ${fear.cellId === cell.id ? "visible" : ""}`}
                 key={fear.id}
                 onClick={handleFearClick(fear.id)}
+                ref={refCell}
               >
-                {/* {getIcon()} */}
-                <DarkIcon width={80}/>
+                {<DarkIcon width={80} />}
               </div>
-            ))}
+             }
+            )}
         </div>
       ))}
     </div>

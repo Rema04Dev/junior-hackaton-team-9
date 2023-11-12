@@ -9,7 +9,6 @@ export const Result = () => {
   const time= useSelector((state) => state.game.time);
   const score = useSelector((state) => state.game.score);
   
-  console.log('RESULT SCORE', score);
   return (
     <section className="main">
       <div className="container">

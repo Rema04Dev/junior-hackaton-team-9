@@ -12,6 +12,8 @@ import { SeparationIcon } from "./fearsIcons/SeparationIcon";
 import GameContainer from "./GameContainer";
 import { useNavigate } from "react-router-dom";
 import { appRoutes } from "../appRoutes";
+import { getRandomNumberByRange } from "../utils";
+import { fearElements } from "./fearsIcons";
 
 const Game = () => {
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ const Game = () => {
     dispatch(resetScore());
     setIsActive(true);
 
-    const gameTimer = setTimeout(endGame, 15000);
+    const gameTimer = setTimeout(endGame, 150000);
     setTimerId(gameTimer);
   };
 
@@ -52,62 +54,22 @@ const Game = () => {
     navigate(appRoutes.result);
   };
 
+
+
   return (
     <>
       <div className="game">
         <div className="container">
           <div className="game-field">
             <div className="score">Score: {score}</div>
-            <div>
-              <input
-                type="radio"
-                id="hard"
-                name="level"
-                value="hard"
-                onChange={(e) => {
-                  e.preventDefault();
-                  setLevel("hard")
-                }}
-              />
-              <label htmlFor="hard">Hard</label>
-
-              <input
-                type="radio"
-                id="medium"
-                name="level"
-                value="medium"
-                onChange={(e) => {
-                  e.preventDefault();
-                  setLevel("medium")
-                }}
-              />
-              <label htmlFor="medium">Medium</label>
-
-              <input
-                type="radio"
-                id="easy"
-                name="level"
-                value="easy"
-                checked
-                onChange={(e) => {
-                  e.preventDefault();
-                  setLevel("easy")
-                }}
-              />
-              <label htmlFor="easy">Easy</label>
-            </div>
-
-            {/*<button onClick={startGame} disabled={isActive}>
-              Start Game
-            </button>
-            <button onClick={restartGame} disabled={!isActive}>
-              Restart Game
-            </button>*/}
+            
             <GameContainer
               onFearClick={handleFearClick}
               isActive={isActive}
               level={level}
-            ></GameContainer>
+            > 
+
+            </GameContainer>
             <div className="score-buttons">
               <button onClick={startGame} disabled={isActive} className="button" id="button-score">Начать игру</button>
               <button onClick={restartGame} disabled={!isActive} className="button" id="button-score">Сбросить игру</button>
