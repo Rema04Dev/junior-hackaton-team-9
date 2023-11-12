@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Начальное значение
 const initialState = {
+  score: 0,
+  time: '11:07',
   items: [
     { id: 99, cellId: 1 },
   ],
