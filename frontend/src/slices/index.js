@@ -3,6 +3,6 @@ import gameReducer from './gameSlice.js';
 
 export default configureStore({
   reducer: {
-    fears: gameReducer,
+    game: gameReducer,
   },
 });

@@ -14,18 +14,22 @@ const gameSlice = createSlice({
   initialState,
   // Редьюсеры в слайсах меняют состояние и ничего не возвращают
   reducers: {
-    addFear: (state, payload) => {
-      state.push(payload);
+    addScore: (state) => {
+      state.score += 1
     },
-    removeFear: (state, payload) => {
-      state.filter(({ id }) => payload.id);
+    setScore: (state, payload) => {
+      state.score = payload
     },
+    resetScore: (state) => {
+      state.score = 0
+    },
+    
   },
 });
 
 // Слайс генерирует действия, которые экспортируются отдельно
 // Действия генерируются автоматически из имен ключей редьюсеров
-export const { addFear, removeFear } = gameSlice.actions;
+export const { setScore, resetScore, addScore } = gameSlice.actions;
 
 // По умолчанию экспортируется редьюсер, сгенерированный слайсом
 export default gameSlice.reducer;
