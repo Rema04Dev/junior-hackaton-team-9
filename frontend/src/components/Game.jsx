@@ -29,10 +29,10 @@ const Game = () => {
   };
 
   const startGame = () => {
-    setIsActive(true)
+    setIsActive(() => true)
     setScore(0)
-    const gameTimer = setTimeout(endGame, 5000)
-    setTimerId(gameTimer)
+    const gameTimer = setTimeout(endGame, 10000)
+    setTimerId(() => gameTimer)
   }
 
   const restartGame = () => {
@@ -42,8 +42,8 @@ const Game = () => {
   }
 
   const endGame = () => {
-    setIsActive(false)
     console.log('END GAME', score)
+    setIsActive(false)
   }
 
   return (

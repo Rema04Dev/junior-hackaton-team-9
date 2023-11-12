@@ -42,15 +42,15 @@ const GameContainer = ({ isActive, onFearClick, children }) => {
 
         setTimeout(() => {
           // console.log('удаляем из FEARS число', newFear, newFearId)
-          setFears(() => fears.filter((fear) => fear.id !== newFearId));
-        }, 15500);
+          setFears((fears) => fears.filter((fear) => fear.id !== newFearId));
+        }, 3000);
       }
     };
 
     if (isActive) {
       const timerId = setInterval(() => {
         createFear(fears);
-      }, 1500);
+      }, 1000);
   
       return () => {
         clearInterval(timerId);
@@ -68,19 +68,22 @@ const GameContainer = ({ isActive, onFearClick, children }) => {
     <div className="game-container">
       {cells.map((cell) => (
         <div key={cell.id} className={"cell"}>
-          {fears
-            .filter((fear) => fear.cellId === cell.id)
-            .map((fear) => (
-              <div
-                className={`fear ${
-                  fear.cellId === cell.id ? "visible" : ""
-                }`}
-                key={fear.id}
-                onClick={handleFearClick(fear.id)}
-              >
-                { children }
-              </div>
-            ))}
+          {isActive
+            ? fears
+              .filter((fear) => fear.cellId === cell.id)
+              .map((fear) => (
+                <div
+                  className={`fear ${
+                    fear.cellId === cell.id ? "visible" : ""
+                  }`}
+                  key={fear.id}
+                  onClick={handleFearClick(fear.id)}
+                >
+                  { children }
+                </div>
+              ))
+            : null
+          }
         </div>
       ))}
     </div>
