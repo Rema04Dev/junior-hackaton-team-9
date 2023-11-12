@@ -1,0 +1,62 @@
+.results-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  padding-top: 10px;
+  padding-bottom: 60px;
+  border: 2px solid #ce33dc;
+  border-radius: 20px;
+}
+
+
+.results-title {
+  text-align: center;
+}
+
+.results-label {
+  font-size: 25px;
+}
+
+
+.results-stats {
+  max-width: 475px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-items: center;
+}
+
+.results-score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-family: "Museo Sans Cyrl Bold", sans-serif;
+  font-size: 34px;
+  text-align: center;
+}
+
+img {
+  padding-left: 10px;
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+}
+
+.results-wrapper .main-button {
+  display: block;
+  width: 150px;
+}
+
+.main-button a{
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+}
+
+.results-buttons{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-shrink: 1;
+}
