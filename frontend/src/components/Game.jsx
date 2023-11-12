@@ -23,13 +23,14 @@ const Game = () => {
   const dispatch = useDispatch();
 
 
-  const handleFearClick = (id) => () => {
+  const handleFearClick = (id) => {
     console.log("handle onFearClick", id);
     setScore((prevScore) => prevScore + 1);
   };
 
   const startGame = () => {
     setIsActive(true)
+    setScore(0)
     const gameTimer = setTimeout(endGame, 5000)
     setTimerId(gameTimer)
   }
