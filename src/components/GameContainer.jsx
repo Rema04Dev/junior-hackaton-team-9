@@ -52,14 +52,14 @@ const GameContainer = ({ isActive, onFearClick, level }) => {
 
         setTimeout(() => {         
           setFears(() => fears.filter((fear) => fear.id !== newFearId));
-        }, levelMapping[level].clearTime);
+        }, 2000);
       }
     };
 
     if (isActive) {
       const timerId = setInterval(() => {
         createFear(fears);
-      }, levelMapping[level].speedAppearing);
+      }, 700);
 
       return () => {
         clearInterval(timerId);

@@ -20,7 +20,7 @@ export const Result = () => {
               <div className="results-score-number" id="score">
                 {score}
               </div>
-              <img src={heartImg} alt="" />
+              <img src={heartImg} alt="" width="34px"/>
             </div>
 
             <div className="results-label">Времени прошло:</div>
@@ -28,7 +28,7 @@ export const Result = () => {
               <div className="results-score-number" id="time">
                 {time}
               </div>
-              <img src={sandwatchImg} alt="" />
+              <img src={sandwatchImg} alt="" width="34px"/>
             </div>
           </div>
           <div className="results-buttons">
