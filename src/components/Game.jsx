@@ -40,7 +40,7 @@ const Game = () => {
     dispatch(resetScore());
     setIsActive(true);
 
-    const gameTimer = setTimeout(endGame, 150000);
+    const gameTimer = setTimeout(endGame, 15000);
     setTimerId(gameTimer);
   };
 
