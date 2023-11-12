@@ -89,17 +89,21 @@ const Game = () => {
               <label htmlFor="easy">Easy</label>
             </div>
 
-            <button onClick={startGame} disabled={isActive}>
+            {/*<button onClick={startGame} disabled={isActive}>
               Start Game
             </button>
             <button onClick={restartGame} disabled={!isActive}>
               Restart Game
-            </button>
+            </button>*/}
             <GameContainer
               onFearClick={handleFearClick}
               isActive={isActive}
               level={level}
             ></GameContainer>
+            <div className="score-buttons">
+              <button onClick={startGame} disabled={isActive} className="button" id="button-score">Начать игру</button>
+              <button onClick={restartGame} disabled={!isActive} className="button" id="button-score">Сбросить игру</button>
+            </div>
           </div>
 
           <div className="fears-description">

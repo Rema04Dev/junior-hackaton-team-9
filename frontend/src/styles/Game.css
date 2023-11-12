@@ -61,34 +61,34 @@
 }
 
 @keyframes apper {
-	0% {
+    0% {
         top: 40px;
-	}
-	50% {
+    }
+    50% {
         top: -20px;
     }
-	100% {
+    100% {
         top: 0;
-	}
+    }
 }
 
 .fear {
-	background: linear-gradient(-45deg, #ee7752, #c20505, rgb(213, 201, 35), #23d5ab);
-	background-size: 600% 600%;
-	animation: gradient 1s ease infinite;
-	width: 80px;
+    background: linear-gradient(-45deg, #ee7752, #c20505, rgb(213, 201, 35), #23d5ab);
+    background-size: 600% 600%;
+    animation: gradient 1s ease infinite;
+    width: 80px;
 }
 
 @keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .fear.visible {
@@ -123,7 +123,20 @@
 }
 
 .fears-description-definition {
-    padding-top: 5px ;
+    padding-top: 5px;
     padding-bottom: 5px;
     font-size: 14px;
+}
+
+
+.score-buttons {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#button-score {
+    width: 130px;
+    padding: 8px 10px;
 }
