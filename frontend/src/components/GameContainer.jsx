@@ -1,9 +1,31 @@
 import { useState, useEffect } from "react";
-import _, { uniqueId } from 'lodash';
+import _, { uniqueId } from "lodash";
+import { getRandomNumberByRange } from "../utils";
+import { fearElements } from "./fearsIcons";
+import { DarkIcon } from "./fearsIcons/DarkIcon";
 
-const GameContainer = ({ isActive, onFearClick, children }) => {
+const levelMapping = {
+  'easy': {
+    speedAppearing: 2000,
+    clearTime: 15000,
+  },
+  'medium': {
+    speedAppearing: 1500,
+    clearTime: 12000,
+  },
+  'hard': {
+    speedAppearing: 500,
+    clearTime: 6000,
+  }
+}
+
+const GameContainer = ({ isActive, onFearClick, children, level }) => {
   const [fears, setFears] = useState([]);
-  const [cells, setCells] = useState(Array(9).fill().map(() => ({ id: uniqueId() })));
+  const [cells, setCells] = useState(
+    Array(9)
+      .fill()
+      .map(() => ({ id: uniqueId() }))
+  );
 
   useEffect(() => {
     const generateRandomNumber = (fears) => {
@@ -43,26 +65,31 @@ const GameContainer = ({ isActive, onFearClick, children }) => {
         setTimeout(() => {
           // console.log('удаляем из FEARS число', newFear, newFearId)
           setFears(() => fears.filter((fear) => fear.id !== newFearId));
-        }, 15500);
+        }, levelMapping[level].clearTime);
       }
     };
 
     if (isActive) {
       const timerId = setInterval(() => {
         createFear(fears);
-      }, 1500);
-  
+      }, levelMapping[level].speedAppearing);
+
       return () => {
         clearInterval(timerId);
       };
     }
-  }, [fears, cells, isActive]);
+  }, [fears, cells, isActive, level]);
 
   const handleFearClick = (id) => () => {
     console.log("handle fear click container", id);
     onFearClick(id);
     setFears((prevFears) => prevFears.filter((fear) => fear.id !== id));
   };
+
+  const getIcon = () => {
+    const randomFearIcon = getRandomNumberByRange(0, fearElements.length - 1);
+    return fearElements[randomFearIcon].icon;
+  }
 
   return (
     <div className="game-container">
@@ -72,19 +99,18 @@ const GameContainer = ({ isActive, onFearClick, children }) => {
             .filter((fear) => fear.cellId === cell.id)
             .map((fear) => (
               <div
-                className={`fear ${
-                  fear.cellId === cell.id ? "visible" : ""
-                }`}
+                className={`fear ${fear.cellId === cell.id ? "visible" : ""}`}
                 key={fear.id}
                 onClick={handleFearClick(fear.id)}
               >
-                { children }
+                {/* {getIcon()} */}
+                <DarkIcon width={80}/>
               </div>
             ))}
         </div>
       ))}
     </div>
-  )
+  );
 };
 
 export default GameContainer;

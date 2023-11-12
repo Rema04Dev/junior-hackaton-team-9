@@ -6,8 +6,10 @@ import heartImg from "../static/images/heart.png";
 import "../styles/Result.css";
 
 export const Result = () => {
-  const { score, time } = useSelector((state) => state.fears);
-
+  const time= useSelector((state) => state.game.time);
+  const score = useSelector((state) => state.game.score);
+  
+  console.log('RESULT SCORE', score);
   return (
     <section className="main">
       <div className="container">
