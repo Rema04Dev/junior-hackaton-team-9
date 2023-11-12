@@ -9,77 +9,41 @@ import { DarkIcon } from "./fearsIcons/DarkIcon";
 import { PlaceIcon } from "./fearsIcons/PlaceIcon";
 import { AdultIcon } from "./fearsIcons/AdultIcon";
 import { SeparationIcon } from "./fearsIcons/SeparationIcon";
+import GameContainer from "./GameContainer";
 
 const Game = () => {
   let counter = 1;
-  const [cells, setCells] = useState(
-    Array(9)
-      .fill()
-      .map(() => ({ id: counter++ }))
-  );
-  const [fears, setFears] = useState([]);
+  const [cells, setCells] = useState(Array(9).fill().map(() => ({ id: counter++ })));
   const [score, setScore] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const [timerId, setTimerId] = useState(null);
 
   const fearsRedux = useSelector((state) => state.fears.items);
   // console.log(fearsRedux)
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const generateRandomNumber = (fears) => {
-      // console.log('create fears', fears, cells)
-      const availableNumbers = cells
-        .filter((cell) => {
-          const fearsIdies = fears.map(({ cellId }) => cellId);
-          return !fearsIdies.includes(cell.id);
-        })
-        .map(({ id }) => id);
-
-      if (availableNumbers.length === 0) {
-        // console.log("Все числа уже использованы.");
-        return null;
-      }
-
-      const randomIndex = Math.floor(Math.random() * availableNumbers.length);
-
-      console.log(
-        "avial numbs",
-        availableNumbers,
-        randomIndex,
-        availableNumbers[randomIndex]
-      );
-
-      return availableNumbers[randomIndex];
-    };
-
-    const createFear = () => {
-      const newFear = generateRandomNumber(fears);
-      const newFearId = uniqueId();
-
-      if (newFear) {
-        // setFears((prevFears) => [...prevFears, { id: newFearId, cellId: newFear }])
-        setFears([...fears, { id: newFearId, cellId: newFear }]);
-
-        setTimeout(() => {
-          // console.log('удаляем из FEARS число', newFear, newFearId)
-          setFears(() => fears.filter((fear) => fear.id !== newFearId));
-        }, 15500);
-      }
-    };
-
-    const timerId = setInterval(() => {
-      createFear(fears);
-    }, 1500);
-
-    return () => {
-      clearInterval(timerId);
-    };
-  }, [fears, cells]);
 
   const handleFearClick = (id) => () => {
-    console.log("handle fear click", id);
+    console.log("handle onFearClick", id);
     setScore((prevScore) => prevScore + 1);
-    setFears((prevFears) => prevFears.filter((fear) => fear.id !== id));
   };
+
+  const startGame = () => {
+    setIsActive(true)
+    const gameTimer = setTimeout(endGame, 5000)
+    setTimerId(gameTimer)
+  }
+
+  const restartGame = () => {
+    setIsActive(false)
+    setScore(0)
+    setIsActive(true)
+  }
+
+  const endGame = () => {
+    setIsActive(false)
+    console.log('END GAME', score)
+  }
 
   return (
     <>
@@ -87,25 +51,11 @@ const Game = () => {
         <div className="container">
           <div className="game-field">
             <div className="score">Score: {score}</div>
-            <div className="game-container">
-              {cells.map((cell) => (
-                <div key={cell.id} className={"cell"}>
-                  {fears
-                    .filter((fear) => fear.cellId === cell.id)
-                    .map((fear) => (
-                      <div
-                        className={`fear ${
-                          fear.cellId === cell.id ? "visible" : ""
-                        }`}
-                        key={fear.id}
-                        onClick={handleFearClick(fear.id)}
-                      >
-                        <SeparationIcon width={80} />
-                      </div>
-                    ))}
-                </div>
-              ))}
-            </div>
+            <button onClick={startGame} disabled={isActive}>Start Game</button>
+            <button onClick={restartGame} disabled={!isActive}>Restart Game</button>
+            <GameContainer onFearClick={handleFearClick} isActive={isActive} >
+              <SeparationIcon width={80} />
+            </GameContainer>
           </div>
 
           <div className="fears-description">
