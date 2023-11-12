@@ -57,7 +57,7 @@ const Game = () => {
             </GameContainer>
             <div className="score-buttons">
               <button onClick={startGame} disabled={isActive} className="button" id="button-score">Начать игру</button>
-              <button onClick={restartGame} disabled={!isActive} className="button" id="button-score">Играть снова</button>
+              <button onClick={restartGame} disabled={!isActive} className="button" id="button-score">Сбросить игру</button>
             </div>
           </div>
 
